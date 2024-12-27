@@ -1,0 +1,135 @@
+.stats {
+  border-right: 2px solid #fff0;
+}
+
+.avatarIcon {
+    border-radius: 8px;
+  width: 60px;
+  height: 60px;
+}
+
+.productImage img {
+  width: 100%;
+  object-fit: cover;
+  height: 530px;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) and (min-width: 768px) {
+  .stats,
+  .stats:not(:last-child) {
+    border-color: #fff0;
+  }
+
+  .stats:nth-child(odd) {
+    border-color: #000;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .stats,
+  .stats:not(:last-child),
+  .stats:nth-child(odd) {
+    border-color: #fff0;
+  }
+}
+.galleryImg {
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+}
+.addGalleryImg {
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  border: 2px dashed grey;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  /* box-shadow: 1px; */
+}
+
+.gallery-image {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gallery-image img {
+  height: 250px;
+  width: 350px;
+  transform: scale(1);
+  transition: transform 0.4s ease;
+}
+
+.caption {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+.upload-caption {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  transform: translateY(80px);
+}
+
+.transparent-box {
+  height: 180px;
+  width: 180px;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s ease;
+}
+.upload-transparent-box {
+  height: 180px;
+  width: 180px;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s ease;
+}
+.img-box {
+  border-radius: 10px;
+  box-sizing: content-box;
+  margin: 10px;
+  height: 180px;
+  width: 180px;
+  overflow: hidden;
+  display: inline-block;
+  color: white;
+  position: relative;
+  background-color: white;
+}
+
+.img-box:hover img {
+  transform: scale(1.1);
+}
+
+.img-box:hover .transparent-box {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.img-box:hover .caption {
+  transform: translateY(80px);
+  opacity: 1;
+}
+
+.img-box:hover {
+  cursor: pointer;
+}

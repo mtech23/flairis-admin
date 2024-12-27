@@ -1,0 +1,229 @@
+.stats {
+  border-right: 2px solid #fff0;
+}
+
+.avatarIcon {
+    border-radius: 8px;
+  width: 60px;
+  height: 60px;
+}
+
+.productImage img {
+  width: 100%;
+  object-fit: cover;
+  height: 530px;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) and (min-width: 768px) {
+  .stats,
+  .stats:not(:last-child) {
+    border-color: #fff0;
+  }
+
+  .stats:nth-child(odd) {
+    border-color: #000;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .stats,
+  .stats:not(:last-child),
+  .stats:nth-child(odd) {
+    border-color: #fff0;
+  }
+}
+/*
+ CSS for the main interaction
+*/
+.accordion > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+
+.accordion .content {
+  overflow-y: hidden;
+  height: 0;
+  transition: height 0.3s ease;
+}
+
+.accordion > input[type="checkbox"]:checked ~ .content {
+  height: auto;
+  overflow: visible;
+}
+
+.accordion .dropdownLabel {
+  background-color: #e4e4e4;
+  display: block;
+}
+
+/*
+ Styling
+*/
+
+.accordion {
+  margin-bottom: 1em;
+}
+
+.accordion > input[type="checkbox"]:checked ~ .content {
+  padding: 15px;
+  border: 1px solid #e8e8e8;
+  border-top: 0;
+  border-radius: 10px;
+  margin-top: -10px;
+}
+
+.accordion .handle {
+  margin: 0;
+  font-size: 1.125em;
+  line-height: 1.2em;
+  background-color: #ececec;
+  border-radius: 10px;
+  border: 10px;
+}
+
+.accordion label {
+  /* background-color: #acacac; */
+  color: #000000;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 10px;
+
+  /* background: #e8e8e8; */
+}
+
+.accordion label:hover,
+.accordion label:focus {
+  /* background-color: #e7e7e7; */
+  border-radius: 10px;
+  /* background: #d8d8d8; */
+}
+
+.accordion .handle label:before {
+  font-family: "fontawesome";
+  /* content: "\f054"; */
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 0.58em;
+  line-height: 1.556em;
+  vertical-align: middle;
+}
+
+/* .accordion > input[type="checkbox"]:checked ~ .handle label:before {
+  content: "\f078";
+} */
+
+/*
+ Demo purposes only
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+a {
+  color: #06c;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+h1 {
+  margin: 0 0 1.5em;
+  font-weight: 600;
+  font-size: 1.5em;
+}
+
+.accordion {
+  /* max-width: 65em; */
+}
+
+.accordion p:last-child {
+  margin-bottom: 0;
+}
+
+.selectImage:hover {
+  width: 150px !important;
+  height: 150px !important;
+  position: relative;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  z-index: 99999;
+}
+.prod-img-wrapper {
+  position: relative;
+  display: inline-block; /* Or block, depending on your layout */
+}
+
+.prod-img {
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.prod-img:hover {
+  filter: blur(4px);
+}
+
+/* Show the .img-edit-icon when the image is hovered */
+.prod-img:hover + .img-edit-icon {
+  display: flex;
+}
+
+.img-edit-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Optional background overlay */
+  color: white; /* Icon color */
+  cursor: pointer; /* Optional, makes the label look clickable */
+}
+
+.post-img-box {
+  border-radius: 10px;
+  /* box-sizing: content-box; */
+  /* margin: 10px; */
+  /* height: 180px; */
+  /* width: 180px; */
+  overflow: hidden;
+  display: inline-block;
+  color: white;
+  position: relative;
+  background-color: white;
+}
+.transparent-box-img {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s ease;
+}
+
+.post-img-box:hover img {
+  transform: scale(1.1);
+}
+
+.post-img-box:hover .transparent-box-img {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.post-img-box:hover .caption {
+  transform: translateY(200px);
+  opacity: 1;
+}
+
+.post-img-box:hover {
+  cursor: pointer;
+}
