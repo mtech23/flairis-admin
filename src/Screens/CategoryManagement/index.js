@@ -3,18 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsisV,
-  faEye,
-  faCheck,
-  faTimes,
-  faFilter,
-  faEdit,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
-import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
 import CustomPagination from "../../Components/CustomPagination";
@@ -25,19 +16,17 @@ import "./style.css";
 import {
   getEntity,
   deleteEntity,
-  editEntity,
   updateEntity,
 } from "../../services/commonServices";
-import { imgUrl } from "../../utils/convertToFormData";
-import Chip from "../../Components/chip";
 import CustomCard from "../../Components/CustomCard";
 import ImageHandler from "../../Components/ImageHandler/ImageHandler";
+import CustomTable from "../../Components/CustomTable";
+import { faDeleteLeft, faEdit, faEllipsisV, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 export const CategoryManagement = () => {
-  const base_url = "https://custom2.mystagingserver.site/food-stadium/public/";
   const [data, setData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState({});
   const [formData, setFormData] = useState({
-    image: null,
+
   });
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -91,14 +80,14 @@ export const CategoryManagement = () => {
   // const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
   const ProductData = async () => {
-    const response = await getEntity("/admin/categories");
+    const response = await getEntity("/admin/category");
     if (response) {
       setData(response.data);
     }
   };
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Product Management";
+    document.title = "Flairis | Product Management";
     ProductData();
   }, []);
   const handleDropdownToggle = (userId) => {
@@ -146,33 +135,19 @@ export const CategoryManagement = () => {
 
   const maleHeaders = [
     {
-      key: "image",
-      title: "Thumbnail",
+      key: "Id",
+      title: "Id",
     },
     {
-      key: "username",
-      title: "Product Name",
-    },
-    {
-      key: "price",
-      title: "Price",
-    },
-    {
-      key: "category",
-      title: "Category",
-    },
-    {
-      key: "in_stock",
-      title: "In Stock",
-    },
-    {
-      key: "stock_value",
-      title: "Stock Value",
+      key: "title",
+      title: "title",
     },
     {
       key: "Actions",
       title: "Actions",
     },
+
+
   ];
   console.log("dataaaa", data);
   return (
@@ -205,7 +180,61 @@ export const CategoryManagement = () => {
                 </div>
                 <div className="row mb-3">
                   <div className="col-12">
-                    {data?.length > 0 &&
+                    <CustomTable headers={maleHeaders}>
+                      <tbody>
+                        {data?.map((item, index) => (
+                          <tr key={index}>
+
+                            <td className="text-capitalize">{item?.id}</td>
+                            <td className="text-capitalize">{item?.category_name}</td>
+                            {/* <td>{item?.price ? `$ ${item?.price}` : `$0`}</td> */}
+
+                            <td>
+                              <Dropdown
+                                className="tableDropdown"
+                                show={dropdownOpen[item.id]}
+                                onToggle={() => handleDropdownToggle(item.id)}
+                              >
+                                <Dropdown.Toggle
+                                  variant="transparent"
+                                  className="notButton classicToggle"
+                                >
+                                  <FontAwesomeIcon icon={faEllipsisV} />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu
+                                  align="end"
+                                  className="tableDropdownMenu"
+                                >
+                                  <Link
+                                    className="tableAction"
+                                    onClick={() => handleDelete(item.id)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrash}
+                                      className="tableActionIcon"
+                                    />
+                                    Delete
+                                  </Link>
+                                  <Link
+                                    className="tableAction"
+                                    to={`/category-management/edit-category/${item.id}`}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faEdit}
+                                      className="tableActionIcon"
+                                    />
+                                    Edit
+                                  </Link>
+
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </td>
+
+                          </tr>
+                        ))}
+                      </tbody>
+                    </CustomTable>
+                    {/* {data?.length > 0 &&
                       data?.map((item, index) => {
                         return (
                           <CustomCard
@@ -215,7 +244,7 @@ export const CategoryManagement = () => {
                             handleEdit={() => handleEdit(item)}
                           />
                         );
-                      })}
+                      })} */}
                     <CustomPagination
                       itemsPerPage={itemsPerPage}
                       totalItems={data?.length}

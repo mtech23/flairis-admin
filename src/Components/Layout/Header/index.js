@@ -37,7 +37,7 @@ export const Header = (props) => {
       const response = await logoutUser();
       console.log("response", response);
 
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token");
       setShowModal(true);
       navigate("/");
       console.log("response", response);

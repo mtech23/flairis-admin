@@ -31,7 +31,7 @@ export const MenuDetails = () => {
 
     useEffect(() => {
         const LogoutData = localStorage.getItem('login');
-        document.title = 'Blinds And Shades Admin | Book Detail';
+        document.title = 'Flairis Admin | Book Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/book_view/${id}`,
             {

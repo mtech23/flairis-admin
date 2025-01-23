@@ -43,7 +43,7 @@ export const AddProduct = () => {
     console.log(formData);
   };
 
-  const LogoutData = localStorage.getItem("accessToken");
+  const LogoutData = localStorage.getItem("token");
 
   const handleSubmit = (event) => {
     event.preventDefault();

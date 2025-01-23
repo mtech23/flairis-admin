@@ -11,7 +11,7 @@ const api = axios.create({
 // Request interceptor to add the token to headers
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -47,9 +47,9 @@ api.interceptors.response.use(
           );
 
           // Save the new token
-          const newToken = response.data.accessToken;
+          const newToken = response.data.token;
           if (newToken) {
-            localStorage.setItem("accessToken", newToken);
+            localStorage.setItem("token", newToken);
 
             // Update the authorization header in the original request
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
@@ -57,17 +57,17 @@ api.interceptors.response.use(
             // Retry the original request
             return api(originalRequest);
           } else {
-            window.location.href = "/blinds-and-shades-admin/login";
+            // window.location.href = "/flairis-admin/login";
           }
         } catch (refreshError) {
           console.error("Token refresh failed:", refreshError);
 
           // Optionally, redirect to login page or show a message to the user
-          window.location.href = "/blinds-and-shades-admin/login";
+          // window.location.href = "/flairis-admin/login";
           return Promise.reject(refreshError);
         }
       } else {
-        window.location.href = "/blinds-and-shades-admin/login";
+        // window.location.href = "/flairis-admin/login";
       }
     }
 

@@ -17,10 +17,7 @@ export const AddCategory = () => {
   const navigate = useNavigate();
   const [unit, setUnit] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    image: "", // Initialize image as an empty string
-    is_hidden: 0,
-  });
+  const [formData, setFormData] = useState({});
 
   const [modalHeading, setModalHeading] = useState("");
   const [edit, setEdit] = useState(false);
@@ -52,12 +49,12 @@ export const AddCategory = () => {
     console.log(formData);
   };
 
-  const LogoutData = localStorage.getItem("accessToken");
+  const LogoutData = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await addEntity("/admin/add-category", formData);
+      const response = await addEntity("/admin/add_category", formData);
       setModalHeading("Category Added successfully");
       setSuccess(true);
       setEdit(true);
@@ -89,19 +86,19 @@ export const AddCategory = () => {
                     <div className="row">
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Title"
+                          label="Category Name"
                           required
                           id="name"
                           type="text"
-                          placeholder="Enter title"
+                          placeholder="Enter Category Name"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="title"
-                          value={formData.title}
+                          name="category_name"
+                          value={formData.category_name}
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Short description"
                           required
@@ -114,31 +111,16 @@ export const AddCategory = () => {
                           value={formData.description}
                           onChange={handleChange}
                         />
-                      </div>
-
-                      {/* <div className="col-md-12 mb-4">
-                        <div className="inputWrapper">
-                          <div className="form-controls">
-                            <label htmlFor="">Long Description</label>
-                            <textarea
-                              name="long_description"
-                              className="form-control shadow border-0"
-                              id=""
-                              cols="30"
-                              rows="10"
-                              value={formData.description}
-                              onChange={handleChange}
-                            ></textarea>
-                          </div>
-                        </div>
                       </div> */}
-                      <div className="col-md-6 mb-4">
+
+
+                      {/* <div className="col-md-6 mb-4">
                         <ImageHandler
                           onUpload={filehandleChange}
                           showEdit={true}
                           text={"category Image"}
                         />
-                      </div>
+                      </div> */}
 
                       <div className="col-md-12">
                         <CustomButton

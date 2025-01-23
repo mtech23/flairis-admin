@@ -6,7 +6,7 @@ export const useApi = (endpoint) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     const base_url =
       "https://custom.mystagingserver.site/mtrecords/public/api/";
     async function fetchData() {
@@ -54,7 +54,7 @@ export const usePost = (endpoint) => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     const base_url =
       "https://custom.mystagingserver.site/mtrecords/public/api/";
     document.querySelector(".loaderBox").classList.remove("d-none");
@@ -114,7 +114,7 @@ export const useEditpost = (endpoint) => {
     setEditData(editValue);
   };
   useEffect(() => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     const base_url =
       "https://custom.mystagingserver.site/mtrecords/public/api/";
     document.querySelector(".loaderBox").classList.remove("d-none");
@@ -178,7 +178,7 @@ export const usePostUpdate = (endpoint) => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     const base_url =
       "https://custom.mystagingserver.site/mtrecords/public/api/";
     document.querySelector(".loaderBox").classList.remove("d-none");

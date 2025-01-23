@@ -55,7 +55,7 @@ export const GalleryManagement = () => {
   };
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Product Management";
+    document.title = "Flairis | Product Management";
     ProductData();
   }, []);
 

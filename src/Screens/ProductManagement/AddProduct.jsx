@@ -20,49 +20,18 @@ export const AddProduct = () => {
   const [modalHeading, setmodalHeading] = useState("");
   const [edit, setEdit] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [categories, setCategories] = useState({});
+
   const [formData, setFormData] = useState({
     image: "",
-    staff_users: [],
-    color: [],
-    addon: [],
-    category: [],
-    warranty_options: [],
-    videos: [],
+    category_id: '',
+    variations: [],
   });
   const Menu = [
     { id: 0, name: "no" },
     { id: 1, name: "yes " },
   ];
-  console.log("Select Menu*", Menu);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [colors, categories, addons] = await Promise.all([
-          getEntity("/admin/colors"),
-          getEntity("/admin/categories"),
-          getEntity("/admin/addons"),
-        ]);
-        setColorOptions(
-          colors.data.map((item) => ({
-            value: item.id,
-            label: item.title,
-            primary_image: `${imgUrl}/${item.primary_image}`,
-          }))
-        );
-        setCategoryOptions(
-          categories.data.map((item) => ({ value: item.id, label: item.title }))
-        );
-        setAddonsOptions(
-          addons.data.map((item) => ({ value: item.id, label: item.title }))
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -75,6 +44,7 @@ export const AddProduct = () => {
   const filehandleChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+
       const fileName = file;
       setFormData((prevData) => ({
         ...prevData,
@@ -90,10 +60,10 @@ export const AddProduct = () => {
     // for (const key in formData) {
     //   if (Array.isArray(formData[key])) {
     //     formData[key].forEach((value, index) => {
-    //       if (key === "warranty_options") {
+    //       if (key === "variations") {
     //         formDataa.append(`${key}[${index}]`, JSON.stringify(value));
-    //       } else if (key != "warranty_options") {
-    //         console.log("warranty_options");
+    //       } else if (key != "variations") {
+    //         console.log("variations");
     //         formDataa.append(`${key}[${index}]`, value);
     //       }
     //     });
@@ -102,7 +72,7 @@ export const AddProduct = () => {
     //   }
     // }
     try {
-      const response = await addEntity("/admin/add-product", formData);
+      const response = await addEntity("admin/store_product", formData);
       if (response.status) {
         console.log("response before if", response.status);
         setmodalHeading("product added");
@@ -146,30 +116,82 @@ export const AddProduct = () => {
   };
   const handleWarrantyOptionChange = (index, event) => {
     const { name, value } = event.target;
+
+    if (name === "product_image") {
+      const file = event.target.files[0];
+      setFormData((prevData) => {
+        const updatedWarrantyOptions = [...prevData.variations];
+        updatedWarrantyOptions[index] = {
+          ...updatedWarrantyOptions[index],
+          [name]: file,
+        };
+        return {
+          ...prevData,
+          variations: updatedWarrantyOptions,
+        };
+      });
+    } else {
+      setFormData((prevData) => {
+        const updatedWarrantyOptions = [...prevData.variations];
+        updatedWarrantyOptions[index] = {
+          ...updatedWarrantyOptions[index],
+          [name]: value,
+        };
+        return {
+          ...prevData,
+          variations: updatedWarrantyOptions,
+        };
+      });
+    }
+  };
+
+  const handleAddAttribute = (variationIndex) => {
     setFormData((prevData) => {
-      const updatedWarrantyOptions = [...prevData.warranty_options];
-      updatedWarrantyOptions[index] = {
-        ...updatedWarrantyOptions[index],
-        [name]: value,
+      const updatedWarrantyOptions = [...prevData.variations];
+      updatedWarrantyOptions[variationIndex] = {
+        ...updatedWarrantyOptions[variationIndex],
+        attributes: [
+          ...(updatedWarrantyOptions[variationIndex].attributes || []),
+          { attribute_id: "", attribute_value_id: "" },
+        ],
       };
       return {
         ...prevData,
-        warranty_options: updatedWarrantyOptions,
+        variations: updatedWarrantyOptions,
       };
     });
   };
+
+  const handleAttributeChange = (variationIndex, attrIndex, name, value) => {
+    setFormData((prevData) => {
+      const updatedWarrantyOptions = [...prevData.variations];
+      const updatedAttributes = [...updatedWarrantyOptions[variationIndex].attributes];
+      updatedAttributes[attrIndex] = {
+        ...updatedAttributes[attrIndex],
+        [name]: value,
+      };
+      updatedWarrantyOptions[variationIndex].attributes = updatedAttributes;
+      return {
+        ...prevData,
+        variations: updatedWarrantyOptions,
+      };
+    });
+  };
+
+
+
+
 
   const addWarrantyOption = (event) => {
     event.preventDefault();
     setFormData((prevData) => ({
       ...prevData,
-      warranty_options: [
-        ...prevData.warranty_options,
-        { title: "", price: "" },
+      variations: [
+        ...prevData.variations,
+        { price: "" },
       ],
     }));
   };
-  console.log("is_stock", formData.is_stock);
 
   const formatOptionLabel = ({ value, label, isSelected, primary_image }) => {
     return (
@@ -205,6 +227,50 @@ export const AddProduct = () => {
       videos: [...prevData.videos, ""], // Add an empty string for the new video link
     }));
   };
+
+  const fetchCatories = () => {
+    const LogoutData = localStorage.getItem("token");
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    fetch(
+      `https://custom3.mystagingserver.site/Flaris_api/api/admin/category`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${LogoutData}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        setCategories(data.data.map((item) => ({ id: item.id, name: item.category_name })));
+      })
+      .catch((error) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        console.log(error);
+      });
+  };
+
+  const [AttributeData, setAttributeData] = useState([])
+  const getAttributeOptions = async () => {
+    try {
+      const [attributeOptions, attributeValues] = await Promise.all([getEntity('/admin/products_attribute'), getEntity('admin/products_attribute_value')])
+      setAttributeData({ attributeOptions: attributeOptions.data, attributeValues: attributeValues.data })
+    } catch (error) {
+      console.log('error', error);
+
+    }
+  }
+
+  useEffect(() => {
+    getAttributeOptions()
+    fetchCatories()
+  }, [])
+  console.log('aaaaaaaaaaaaaaaaaaaaaa', AttributeData);
+
+
   return (
     <>
       <DashboardLayout>
@@ -238,114 +304,13 @@ export const AddProduct = () => {
                         />
                       </div>
                       <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="short desc"
+                        <SelectBox
+                          selectClass="mainInput"
+                          name="category_id"
+                          label="Select Category"
                           required
-                          id="short_desc"
-                          type="text"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="short_desc"
-                          value={formData.short_desc}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="long desc"
-                          required
-                          id="long_desc"
-                          type="text"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="long_desc"
-                          value={formData.long_desc}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      {/* <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="video link"
-                          required
-                          id="videos"
-                          type="text"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="videos"
-                          value={formData.videos}
-                          onChange={handleChange}
-                        />
-                      </div> */}
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="shipping desc"
-                          required
-                          id="videos"
-                          type="text"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="shipping_desc"
-                          value={formData.shipping_desc}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="product max width"
-                          required
-                          id="width_max"
-                          type="number"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="width_max"
-                          value={formData.width_max}
-                          onChange={handleChange}
-                        />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="product min width"
-                          required
-                          id="width_min"
-                          type="number"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="width_min"
-                          value={formData.width_min}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="product max height"
-                          required
-                          id="height_max"
-                          type="number"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="height_max"
-                          value={formData.height_max}
-                          onChange={handleChange}
-                        />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="product min height"
-                          required
-                          id="height_min"
-                          type="number"
-                          placeholder="Enter Product Name"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="height_min"
-                          value={formData.height_min}
+                          value={formData.category_id}
+                          option={categories}
                           onChange={handleChange}
                         />
                       </div>
@@ -364,70 +329,6 @@ export const AddProduct = () => {
                         />
                       </div>
                       <div className="col-md-6 mb-4">
-                        <SelectBox
-                          selectClass="mainInput"
-                          name="is_hidden"
-                          label="is hidden"
-                          placeholder="is hidden"
-                          required
-                          value={formData.is_hidden}
-                          option={Menu}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <SelectBox
-                          selectClass="mainInput"
-                          name="is_stock"
-                          label="is stock item"
-                          placeholder="select "
-                          required
-                          value={formData.is_stock}
-                          option={Menu}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      {formData.is_stock == 1 && (
-                        <div className="col-md-6 mb-4">
-                          <CustomInput
-                            label="Stock value"
-                            required
-                            id="height_min"
-                            type="number"
-                            placeholder="Enter Product Stock value"
-                            labelClass="mainLabel"
-                            inputClass="mainInput"
-                            name="stock_value"
-                            value={formData.stock_value}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      )}
-                      <div className="col-md-6 mb-4">
-                        <SelectBox
-                          selectClass="mainInput"
-                          name="shipping"
-                          label="shipping"
-                          placeholder="select "
-                          required
-                          value={formData.shipping}
-                          option={Menu}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <SelectBox
-                          selectClass="mainInput"
-                          name="Menu"
-                          label="is kid friendly"
-                          placeholder="is hidden"
-                          required
-                          value={formData.Menu}
-                          option={Menu}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Product Image"
                           required
@@ -436,10 +337,10 @@ export const AddProduct = () => {
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="image"
-                          onChange={filehandleChange}
+                          onChange={(e) => filehandleChange(e)}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <label className="mainLabel">Select Colors</label>
                         <Select
                           isMulti
@@ -484,56 +385,138 @@ export const AddProduct = () => {
                           classNamePrefix="select"
                           onChange={handleChangePrevSubSelect("addon")}
                         />
+                      </div> */}
+                      <div className="col-md-12 mb-4">
+                        <div className="inputWrapper">
+                          <div className="form-controls">
+                            <label htmlFor="">Description</label>
+                            <textarea
+                              name="description"
+                              className="form-control shadow border-0"
+                              id=""
+                              cols="30"
+                              rows="10"
+                              value={formData.description}
+                              onChange={handleChange}
+                            ></textarea>
+                          </div>
+                        </div>
                       </div>
                       <section class="accordion">
                         <input type="checkbox" name="collapse2" id="handle3" />
                         <h2 class="handle">
                           <label for="handle3" className="dropdownLabel">
-                            Add warranty options{" "}
+                            Add Product Variations{" "}
                           </label>
                         </h2>
                         <div class="content">
-                          {formData.warranty_options.map((option, index) => (
-                            <div key={index} className="row">
-                              <div className="col-md-6 ">
+                          {formData.variations.map((variation, variationIndex) => (
+                            <div key={variationIndex} className="row">
+                              <div className="col-md-3 ">
                                 <CustomInput
-                                  label="Title"
+                                  label="sku"
                                   required
-                                  id={`title-${index}`}
+                                  id={`sku-${variationIndex}`}
                                   type="text"
-                                  placeholder="Enter Title"
+                                  placeholder="Enter sku"
                                   labelClass="mainLabel p-1"
                                   inputClass="mainInput"
-                                  name="title"
-                                  value={option.title}
+                                  name="sku"
+                                  value={variation.sku}
                                   onChange={(event) =>
-                                    handleWarrantyOptionChange(index, event)
+                                    handleWarrantyOptionChange(variationIndex, event)
                                   }
                                 />
                               </div>
-                              <div className="col-md-6 ">
+                              <div className="col-md-3 ">
                                 <CustomInput
-                                  label="Price"
+                                  label="price"
                                   required
-                                  id={`price-${index}`}
+                                  id={`price-${variationIndex}`}
                                   type="text"
-                                  placeholder="Enter Price"
+                                  placeholder="Enter price"
                                   labelClass="mainLabel p-1"
                                   inputClass="mainInput"
                                   name="price"
-                                  value={option.price}
+                                  value={variation.price}
                                   onChange={(event) =>
-                                    handleWarrantyOptionChange(index, event)
+                                    handleWarrantyOptionChange(variationIndex, event)
                                   }
                                 />
                               </div>
+                              <div className="col-md-3 ">
+                                <CustomInput
+                                  label="stock"
+                                  required
+                                  id={`stock-${variationIndex}`}
+                                  type="text"
+                                  placeholder="Enter stock"
+                                  labelClass="mainLabel p-1"
+                                  inputClass="mainInput"
+                                  name="stock"
+                                  value={variation.stock}
+                                  onChange={(event) =>
+                                    handleWarrantyOptionChange(variationIndex, event)
+                                  }
+                                />
+                              </div>
+                              <div className="col-md-6 mb-4">
+                                <CustomInput
+                                  label="Upload Product Image"
+                                  required
+                                  id="file"
+                                  type="file"
+                                  labelClass="mainLabel"
+                                  inputClass="mainInput"
+                                  name="product_image"
+                                  onChange={(event) =>
+                                    handleWarrantyOptionChange(variationIndex, event)
+                                  }
+                                />
+                              </div>
+                              <h4>Attributes</h4>
+                              {variation.attributes?.map((attr, attrIndex) => (
+                                <div key={attrIndex} style={{ marginBottom: "10px" }}>
+                                  <div className="col-md-6 mb-4">
+                                    <SelectBox
+                                      selectClass="mainInput"
+                                      type="text"
+                                      option={AttributeData.attributeOptions}
+                                      placeholder="Attribute ID"
+                                      value={attr.attribute_id}
+                                      onChange={(e) =>
+                                        handleAttributeChange(variationIndex, attrIndex, "attribute_id", e.target.value)
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-6 mb-4">
+                                    <SelectBox
+                                      selectClass="mainInput"
+                                      type="text"
+                                      placeholder="Attribute Value ID"
+                                      value={attr.attribute_value_id}
+                                      option={AttributeData.attributeValues.filter(item => item.attribute_id === 1).map(item => ({ id: item.id, name: item.value }))}
+                                      onChange={(e) =>
+                                        handleAttributeChange(variationIndex, attrIndex, "attribute_value_id", e.target.value)
+                                      }
+                                    />
+                                  </div>
+
+                                </div>
+                              ))}
+
+                              <button type="button"   className="btn btn-success w-25" onClick={() => handleAddAttribute(variationIndex)}>
+                                Add Attribute
+                              </button>
                             </div>
+
+
                           ))}
                           <div className="col-md-3 mb-2">
                             <div className="addUser">
                               <CustomButton
                                 btnClass="primaryBtn"
-                                text="Add Warranty Option"
+                                text="Add Product Variation"
                                 // variant="primaryButton"
                                 onClick={addWarrantyOption}
                               />
@@ -548,52 +531,7 @@ export const AddProduct = () => {
                           </div>
                         </div>
                       </section>
-                      <section className="accordion">
-                        <input
-                          type="checkbox"
-                          name="collapseVideos"
-                          id="handleVideos"
-                        />
-                        <h2 className="handle">
-                          <label
-                            htmlFor="handleVideos"
-                            className="dropdownLabel"
-                          >
-                            Add Video Links
-                          </label>
-                        </h2>
-                        <div className="content">
-                          {formData.videos.map((video, index) => (
-                            <div key={index} className="row">
-                              <div className="col-md-12 mb-2">
-                                <CustomInput
-                                  label={`Video Link ${index + 1}`}
-                                  required
-                                  id={`video-${index}`}
-                                  type="text"
-                                  placeholder="Enter Video Link"
-                                  labelClass="mainLabel"
-                                  inputClass="mainInput"
-                                  name={`video-${index}`}
-                                  value={video}
-                                  onChange={(event) =>
-                                    handleVideoChange(index, event)
-                                  }
-                                />
-                              </div>
-                            </div>
-                          ))}
-                          <div className="col-md-3 mb-2">
-                            <div className="addUser">
-                              <CustomButton
-                                btnClass="primaryBtn"
-                                text="Add Video Link"
-                                onClick={addVideoLink}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </section>
+
                     </div>
                     <CustomButton
                       btnClass="primaryBtn"

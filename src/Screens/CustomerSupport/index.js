@@ -90,7 +90,7 @@ export const CustomerSupport = () => {
   }
 
   useEffect(() => {
-    document.title = 'Blinds And Shades Admin | Customer Support';
+    document.title = 'Flairis Admin | Customer Support';
     AdsListing()
 
   }, []);

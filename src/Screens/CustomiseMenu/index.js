@@ -96,7 +96,7 @@ export const CustomiseMenu = () => {
   }
 
   useEffect(() => {
-    document.title = 'Blinds And Shades | Customise Menu';
+    document.title = 'Flairis | Customise Menu';
     CustomMenuList()
 
   }, []);

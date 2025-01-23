@@ -19,7 +19,7 @@ const AdminLogin = () => {
   console.log(formData.password);
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Login";
+    document.title = "Flairis | Login";
   }, []);
 
   const handleSubmit = async (event) => {
@@ -31,7 +31,7 @@ const AdminLogin = () => {
       const response = await loginUser(formData);
       console.log("response", response);
       if (response.success) {
-        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("token", response.data.token);
         localStorage.setItem("refreshToken", response.data.refreshToken);
 
         console.log("Login Response:", response);

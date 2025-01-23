@@ -16,7 +16,7 @@ const Profile = () => {
     const [userData, setUserData] = useState({});
 
     useEffect(() => {
-        document.title = 'Blinds And Shades | My Profile';
+        document.title = 'Flairis | My Profile';
 
         setUserData(currentUser);
     }, []);

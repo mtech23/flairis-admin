@@ -15,37 +15,13 @@ export const EditCategory = () => {
     image: "", // Initialize image as an empty string
   });
 
-  const fetchCatories = () => {
-    const LogoutData = localStorage.getItem("accessToken");
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    fetch(
-      `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/category_listing`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${LogoutData}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        document.querySelector(".loaderBox").classList.add("d-none");
-        setCategories(data.data);
-      })
-      .catch((error) => {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        console.log(error);
-      });
-  };
 
-  const fetechBookData = () => {
-    const LogoutData = localStorage.getItem("accessToken");
+
+  const fetechcategoryData = () => {
+    const LogoutData = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(
-      `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/book_view/${id}`,
+      `https://custom3.mystagingserver.site/Flaris_api/api/admin/category/${id}`,
       {
         method: "GET",
         headers: {
@@ -67,8 +43,7 @@ export const EditCategory = () => {
       });
   };
   useEffect(() => {
-    fetchCatories();
-    fetechBookData();
+    fetechcategoryData();
   }, []);
 
   const handleChange = (event) => {
@@ -93,7 +68,7 @@ export const EditCategory = () => {
     console.log(formData);
   };
 
-  const LogoutData = localStorage.getItem("accessToken");
+  const LogoutData = localStorage.getItem("token");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -108,7 +83,7 @@ export const EditCategory = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     // Make the fetch request
     fetch(
-      `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/book_add_update/${id}`,
+      `https://custom3.mystagingserver.site/Flaris_api/api/admin/edit_category/${id}`,
       {
         method: "POST",
         headers: {
@@ -140,7 +115,7 @@ export const EditCategory = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-                Edit Book
+                Edit category
               </h2>
             </div>
           </div>
@@ -152,71 +127,17 @@ export const EditCategory = () => {
                     <div className="row">
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Add Book Title"
+                          label="Add category Title"
                           required
                           id="name"
                           type="text"
-                          placeholder="Enter Book Title"
+                          placeholder="Enter category name"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="name"
-                          value={formData.name}
+                          name="category_name"
+                          value={formData.category_name}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Enter price"
-                          required
-                          id="price"
-                          type="number"
-                          placeholder="Enter price"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="price"
-                          value={formData.price}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <SelectBox
-                          selectClass="mainInput"
-                          name="category_id"
-                          label="Select Category"
-                          required
-                          value={formData.category_id}
-                          option={categories}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Upload Product Image"
-                          required
-                          id="file"
-                          type="file"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="image"
-                          // value={formData.image}
-                          onChange={filehandleChange}
-                        />
-                      </div>
-                      <div className="col-md-12 mb-4">
-                        <div className="inputWrapper">
-                          <div className="form-controls">
-                            <label htmlFor="">Description</label>
-                            <textarea
-                              name="description"
-                              className="form-control shadow border-0"
-                              id=""
-                              cols="30"
-                              rows="10"
-                              value={formData.description}
-                              onChange={handleChange}
-                            ></textarea>
-                          </div>
-                        </div>
                       </div>
                       <div className="col-md-12">
                         <CustomButton
@@ -239,7 +160,7 @@ export const EditCategory = () => {
             setShowModal(false);
           }}
           success
-          heading="Book Update Successfully."
+          heading="category Update Successfully."
         />
       </DashboardLayout>
     </>

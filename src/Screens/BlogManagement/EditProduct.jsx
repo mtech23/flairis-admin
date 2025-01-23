@@ -16,7 +16,7 @@ export const EditBlog = () => {
   });
 
   const fetchCatories = () => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(
       `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/category_listing`,
@@ -42,7 +42,7 @@ export const EditBlog = () => {
   };
 
   const fetechBookData = () => {
-    const LogoutData = localStorage.getItem("accessToken");
+    const LogoutData = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(
       `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/book_view/${id}`,
@@ -93,7 +93,7 @@ export const EditBlog = () => {
     console.log(formData);
   };
 
-  const LogoutData = localStorage.getItem("accessToken");
+  const LogoutData = localStorage.getItem("token");
 
   const handleSubmit = (event) => {
     event.preventDefault();

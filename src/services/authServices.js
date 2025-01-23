@@ -18,7 +18,7 @@ export const loginUser = async (formData) => {
 
   try {
     const response = await api.post("/user-login", formDataMethod);
-    localStorage.setItem("accessToken", response?.data?.data.accessToken);
+    localStorage.setItem("token", response?.data?.data.token);
     localStorage.setItem("refreshToken", response?.data?.data.refresh);
 
 
@@ -73,7 +73,7 @@ export const resetPassword = async (password, password_confirmation) => {
 export const logoutUser = async () => {
   try {
     const response = await api.post("/logout");
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("token");
     return response.data;
   } catch (error) {
     console.error("Login failed:", error);

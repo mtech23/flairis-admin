@@ -19,7 +19,7 @@ const ImageHandler = ({
 
   useEffect(() => {
     if (imagePath && !imagePreview) {
-      const pathWithBase = `${imgUrl}/${imagePath}`;
+      const pathWithBase = `${imagePath}`;
       setImagePreview(pathWithBase);
     }
   }, [imagePath]);

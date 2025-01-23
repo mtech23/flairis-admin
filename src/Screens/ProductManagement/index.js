@@ -23,6 +23,7 @@ import { imgUrl } from "../../utils/convertToFormData";
 import Chip from "../../Components/chip";
 export const ProductManagement = () => {
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([])
   const [dropdownOpen, setDropdownOpen] = useState({});
 
   const [showModal, setShowModal] = useState(false);
@@ -65,7 +66,14 @@ export const ProductManagement = () => {
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
+  const categoryData = async () => {
+    const response = await getEntity("/admin/category");
+    if (response) {
+      console.log('response.categories', response.categories);
 
+      setCategory(response.data);
+    }
+  };
   const ProductData = async () => {
     const response = await getEntity("/admin/products");
     if (response) {
@@ -74,7 +82,8 @@ export const ProductManagement = () => {
   };
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Product Management";
+    document.title = "Flairis | Product Management";
+    categoryData()
     ProductData();
   }, []);
   const handleDropdownToggle = (userId) => {
@@ -91,7 +100,6 @@ export const ProductManagement = () => {
     setEdit(true);
     ProductData();
   };
-
   const maleHeaders = [
     {
       key: "image",
@@ -111,18 +119,15 @@ export const ProductManagement = () => {
     },
     {
       key: "in_stock",
-      title: "Is Stock Item",
+      title: "Stock Status",
     },
-    {
-      key: "stock_value",
-      title: "Stock Value",
-    },
+
     {
       key: "Actions",
       title: "Actions",
     },
   ];
-
+  console.log('daaaaaaaaa', data);
   return (
     <>
       <DashboardLayout>
@@ -159,19 +164,18 @@ export const ProductManagement = () => {
                           <tr key={index}>
                             <td>
                               <img
-                                src={`${imgUrl}/${item?.image}`}
+                                src={`${item?.image}`}
                                 className="avatarIcon"
                               />
                             </td>
                             <td className="text-capitalize">{item?.name}</td>
                             <td>{item?.price ? `$ ${item?.price}` : `$0`}</td>
-                            <td>{item?.category?.name}</td>
-                            <td>{item.in_stock ? "Yes" : "No"}</td>
+                            <td>{category?.find(i => i.id === item?.category_id)?.category_name}</td>
                             <td>
                               {" "}
                               <Chip
-                                stock={item.stock_value}
-                                isStockItem={item.in_stock}
+                                stock={item.stock}
+
                               />
                             </td>
                             <td>

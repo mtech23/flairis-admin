@@ -92,7 +92,7 @@ export const ZipCode = () => {
 
     const SelectOptions = [];
     useEffect(() => {
-        document.title = 'Blinds And Shades | ZipCode List';
+        document.title = 'Flairis | ZipCode List';
 
         fetchData()
         // fectchBrandData();

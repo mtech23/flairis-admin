@@ -19,7 +19,7 @@ export const addEntity = async (endpoint, data) => {
   document.querySelector(".loaderBox").classList.remove("d-none");
 
   try {
-    const response = await api.post(endpoint, data, {
+    const response = await api.post(endpoint, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -57,7 +57,7 @@ export const updateEntity = async (endpoint, data) => {
   document.querySelector(".loaderBox").classList.remove("d-none");
 
   try {
-    const response = await api.post(endpoint, data,);
+    const response = await api.post(endpoint, formData,);
     return response.data;
   } catch (error) {
     document.querySelector(".loaderBox").classList.ass("d-none");
@@ -72,7 +72,7 @@ export const deleteEntity = async (endpoint) => {
   console.log("deleteee");
   document.querySelector(".loaderBox").classList.remove("d-none");
   try {
-    const response = await api.post(endpoint);
+    const response = await api.delete(endpoint);
     return response.data;
   } catch (error) {
     document.querySelector(".loaderBox").classList.add("d-none");

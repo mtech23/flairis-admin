@@ -1,6 +1,6 @@
 .sidebar {
     width: 260px;
-    height: calc(100vh - 6rem);
+    height: calc(100vh);
     position: fixed;
     transition: all 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
     background: #192C4F;

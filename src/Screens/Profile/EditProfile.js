@@ -33,7 +33,7 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Edit Profile";
+    document.title = "Flairis | Edit Profile";
     setOptionData(country);
     setUserData(currentUser);
   });

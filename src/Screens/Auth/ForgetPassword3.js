@@ -18,7 +18,7 @@ const ForgetPassword3 = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    document.title = "Blinds And Shades | Password Recovery";
+    document.title = "Flairis | Password Recovery";
   }, []);
 
   const handleClick = async () => {

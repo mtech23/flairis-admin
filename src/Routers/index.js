@@ -46,6 +46,7 @@ import { ColorManagement } from "../Screens/ColorManagement";
 import { AddCategory } from "../Screens/CategoryManagement/AddProduct";
 import { AddColor } from "../Screens/ColorManagement/AddProduct";
 import { EditColor } from "../Screens/ColorManagement/EditProduct";
+import { EditCategory } from "../Screens/CategoryManagement/EditCategory";
 
 export default function AdminRouter() {
   return (
@@ -86,6 +87,10 @@ export default function AdminRouter() {
         <Route
           path="/edit-color/:id"
           element={<ProtectedRoutes Components={EditColor} />}
+        />
+        <Route
+          path="/category-management/edit-category/:id"
+          element={<ProtectedRoutes Components={EditCategory} />}
         />
 
         <Route

@@ -24,7 +24,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
 
-    document.title = 'Blinds And Shades Admin | Dashboard';
+    document.title = 'Flairis Admin | Dashboard';
   }, []);
 
 

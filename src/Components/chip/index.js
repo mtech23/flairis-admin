@@ -1,18 +1,16 @@
 import React from "react";
 import "./style.css";
-const Chip = ({ stock, isStockItem }) => {
+const Chip = ({ stock }) => {
 
-  
+
   return (
     <>
-      {!isStockItem ? (
-        <span className="in-stock">Available</span>
-      ) : stock > 0 ? (
+      { stock == 0 ? (
+        <span className="out-of-stock">out of stock</span>
+      ) : (
         <span className="in-stock">
           in stock <span className="text-black"> {`(${stock})`}</span>
         </span>
-      ) : (
-        <span className="out-of-stock">out of stock</span>
       )}
     </>
   );

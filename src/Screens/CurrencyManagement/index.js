@@ -30,7 +30,7 @@ export const CurrencyManagement = () => {
   //   useApi("admin/leads-amount-received-monthly");
 
   useEffect(() => {
-    document.title = "Blinds And Shades Admin | Currency Management";
+    document.title = "Flairis Admin | Currency Management";
   }, []);
 
   // useEffect(() => {

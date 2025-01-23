@@ -52,7 +52,7 @@ export const AddBlog = () => {
     console.log(formData);
   };
 
-  const LogoutData = localStorage.getItem("accessToken");
+  const LogoutData = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();

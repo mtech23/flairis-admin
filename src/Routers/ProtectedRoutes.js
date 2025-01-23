@@ -4,7 +4,7 @@ export const ProtectedRoutes = (props) => {
   const { Components } = props;
   const navigate = useNavigate();
   useEffect(() => {
-    let login = localStorage.getItem("accessToken");
+    let login = localStorage.getItem("token");
     if (false) {
       navigate("/login");
     }

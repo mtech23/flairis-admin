@@ -37,6 +37,7 @@
 
 .siteLogo img {
     max-width: 100%;
+    margin: auto;
 }
 
 .siteLogo h1 {
