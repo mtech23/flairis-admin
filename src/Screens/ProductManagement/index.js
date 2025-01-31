@@ -194,16 +194,7 @@ export const ProductManagement = () => {
                                   align="end"
                                   className="tableDropdownMenu"
                                 >
-                                  <Link
-                                    className="tableAction"
-                                    to={`/post-listing/post-details/${item.id}`}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faEye}
-                                      className="tableActionIcon"
-                                    />
-                                    View
-                                  </Link>
+
                                   <Link
                                     to={`/product-management/edit-product/${item.id}`}
                                     className="tableAction"

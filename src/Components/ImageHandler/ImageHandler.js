@@ -11,8 +11,10 @@ const ImageHandler = ({
   showEdit = false,
   showDelete = false,
   height = "200px",
+  name = 'image',
   width = "200px",
-  text = null,showPreview=true
+  text = null, showPreview = true,
+  required=false
 }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
@@ -26,10 +28,11 @@ const ImageHandler = ({
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    const name = event.target.name;
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      onUpload({ file, event, previewUrl });
+      onUpload({ file, event, previewUrl,name });
     }
   };
 
@@ -67,7 +70,9 @@ const ImageHandler = ({
                     accept="image/*"
                     style={{ display: "none" }}
                     onChange={handleImageUpload}
+                    name={name}
                     ref={fileInputRef}
+                    required={required}
                   />
                   <FontAwesomeIcon icon={faEdit} />
                 </div>
@@ -90,6 +95,8 @@ const ImageHandler = ({
             type="file"
             accept="image/*"
             style={{ display: "none" }}
+            name={name}
+            required={required}
             onChange={handleImageUpload}
           />
         </label>

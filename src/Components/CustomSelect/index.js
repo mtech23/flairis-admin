@@ -25,11 +25,12 @@ export const SelectBox = (props) => {
           name={props?.name}
           onChange={props.onChange}
           value={props.value}
+          required={props.required}
         >
-          <option>{`Select ${props?.name}`}</option>
+          <option required={props.required}>{`Select ${props?.name}`}</option>
           {Array.isArray(props.option) &&
             props.option.map((item) => (
-              <option value={!item.code ? item.id : item.code}>
+              <option required={props.required} value={!item.code ? item.id : item.code}>
                 {item.name}
               </option>
             ))}

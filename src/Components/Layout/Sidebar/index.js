@@ -19,9 +19,8 @@ export const Sidebar = (props) => {
       <ul className="list-unstyled">
         <li className="sidebar-li">
           <Link
-            className={`sideLink ${
-              location.pathname.includes("/dashboard") ? "active" : ""
-            }`}
+            className={`sideLink ${location.pathname.includes("/dashboard") ? "active" : ""
+              }`}
             to="/dashboard"
           >
             <span className="sideIcon">
@@ -33,9 +32,8 @@ export const Sidebar = (props) => {
 
         <li className="sidebar-li">
           <Link
-            className={`sideLink ${
-              location.pathname.includes("product") ? "active" : ""
-            }`}
+            className={`sideLink ${location.pathname.includes("product") ? "active" : ""
+              }`}
             to="/product-management"
           >
             <span className="sideIcon">
@@ -45,25 +43,11 @@ export const Sidebar = (props) => {
           </Link>
         </li>
 
-        <li className="sidebar-li">
-          <Link
-            className={`sideLink ${
-              location.pathname.includes("order") ? "active" : ""
-            }`}
-            to="/order-management"
-          >
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faBorderAll} />
-            </span>
-            <span className="sideLinkText">Order Management</span>
-          </Link>
-        </li>
 
         <li className="sidebar-li">
           <Link
-            className={`sideLink ${
-              location.pathname.includes("category") ? "active" : ""
-            }`}
+            className={`sideLink ${location.pathname.includes("category") ? "active" : ""
+              }`}
             to="/category-management"
           >
             <span className="sideIcon">

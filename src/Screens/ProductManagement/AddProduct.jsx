@@ -8,15 +8,11 @@ import CustomButton from "../../Components/CustomButton";
 
 import { getEntity, addEntity } from "../../services/commonServices";
 
-import Select from "react-select";
 import { useNavigate } from "react-router";
-import { imgUrl } from "../../utils/convertToFormData";
+import ImageHandler from "../../Components/ImageHandler/ImageHandler";
 
 export const AddProduct = () => {
   const navigate = useNavigate();
-  const [colorOptions, setColorOptions] = useState([]);
-  const [addonsOptions, setAddonsOptions] = useState([]);
-  const [categoryOptions, setCategoryOptions] = useState([]);
   const [modalHeading, setmodalHeading] = useState("");
   const [edit, setEdit] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -41,14 +37,13 @@ export const AddProduct = () => {
     }));
   };
 
-  const filehandleChange = (event) => {
-    const file = event.target.files[0];
+  const filehandleChange = ({ file, name }) => {
     if (file) {
 
-      const fileName = file;
+
       setFormData((prevData) => ({
         ...prevData,
-        image: fileName,
+        [name]: file,
       }));
     }
   };
@@ -152,7 +147,7 @@ export const AddProduct = () => {
         ...updatedWarrantyOptions[variationIndex],
         attributes: [
           ...(updatedWarrantyOptions[variationIndex].attributes || []),
-          { attribute_id: "", attribute_value_id: "" },
+          { attribute_id: 1, attribute_value_id: "" },
         ],
       };
       return {
@@ -193,40 +188,7 @@ export const AddProduct = () => {
     }));
   };
 
-  const formatOptionLabel = ({ value, label, isSelected, primary_image }) => {
-    return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        {
-          <img
-            src={primary_image}
-            alt={value}
-            className="selectImage"
-            style={{ marginRight: "8px", width: "20px", height: "20px" }}
-          />
-        }
-        <span>{label}</span>
-      </div>
-    );
-  };
-  const handleVideoChange = (index, event) => {
-    const { value } = event.target;
-    setFormData((prevData) => {
-      const updatedVideos = [...prevData.videos];
-      updatedVideos[index] = value;
-      return {
-        ...prevData,
-        videos: updatedVideos,
-      };
-    });
-  };
 
-  const addVideoLink = (event) => {
-    event.preventDefault();
-    setFormData((prevData) => ({
-      ...prevData,
-      videos: [...prevData.videos, ""], // Add an empty string for the new video link
-    }));
-  };
 
   const fetchCatories = () => {
     const LogoutData = localStorage.getItem("token");
@@ -289,6 +251,32 @@ export const AddProduct = () => {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row">
+                      <div className="row">
+                        <div className="col-md-3 mb-4">
+
+                          <ImageHandler
+                            imagePath={formData?.image}
+                            showEdit={true}
+                            width="100%"
+                            text="Upload Product Image"
+                            name="image"
+                            onUpload={filehandleChange}
+                          />
+                        </div>
+                        {/* <div className="col-md-6 mb-4 opacity-0" >
+                        <CustomInput
+                          label="Upload Product Image"
+                          required
+                          value={formData?.image}
+                          id="file"
+                          type="file"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="image"
+                          onChange={(e) => filehandleChange(e)}
+                        />
+                      </div> */}
+                      </div>
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Add Product Name"
@@ -328,7 +316,8 @@ export const AddProduct = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Product Image"
                           required
@@ -339,7 +328,7 @@ export const AddProduct = () => {
                           name="image"
                           onChange={(e) => filehandleChange(e)}
                         />
-                      </div>
+                      </div> */}
                       {/* <div className="col-md-6 mb-4">
                         <label className="mainLabel">Select Colors</label>
                         <Select
@@ -462,7 +451,7 @@ export const AddProduct = () => {
                               </div>
                               <div className="col-md-6 mb-4">
                                 <CustomInput
-                                  label="Upload Product Image"
+                                  label="Upload Variant Image"
                                   required
                                   id="file"
                                   type="file"
@@ -495,7 +484,7 @@ export const AddProduct = () => {
                                       type="text"
                                       placeholder="Attribute Value ID"
                                       value={attr.attribute_value_id}
-                                      option={AttributeData.attributeValues.filter(item => item.attribute_id === 1).map(item => ({ id: item.id, name: item.value }))}
+                                      option={AttributeData.attributeValues.filter(item => item.attribute_id == attr.attribute_id).map(item => ({ id: item.id, name: item.value }))}
                                       onChange={(e) =>
                                         handleAttributeChange(variationIndex, attrIndex, "attribute_value_id", e.target.value)
                                       }
@@ -504,10 +493,14 @@ export const AddProduct = () => {
 
                                 </div>
                               ))}
+                              <div className="col-md-6 mb-2">
+                                <div className="addUser">
 
-                              <button type="button"   className="btn btn-success w-25" onClick={() => handleAddAttribute(variationIndex)}>
-                                Add Attribute
-                              </button>
+                                  <button type="button" className="btn btn-secondary w-25" onClick={() => handleAddAttribute(variationIndex)}>
+                                    Add Attribute
+                                  </button>
+                                </div>
+                              </div>
                             </div>
 
 
